@@ -5,6 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Wedding Invitation</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
   <style>
     body {
       margin: 0;
@@ -15,7 +16,6 @@
       overflow: hidden;
       transition: background 1s ease-in-out;
     }
-
     /* Dark overlay for dim effect */
     .overlay {
       position: absolute;
@@ -27,28 +27,28 @@
       z-index: 0;
       transition: opacity 1s ease-in-out;
     }
-
     /* Countdown in middle */
     #countdown {
-      position: relative;
-      z-index: 1;
-      font-size: 40px;
-      font-weight: bold;
-      color: #fff;
-      text-shadow: 2px 2px 8px #000;
-      animation: pulse 1s infinite;
-      text-align: center;
-      padding: 20px;
-      background: rgba(0, 0, 0, 0.4);
-      border-radius: 15px;
-    }
-
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.1); }
-      100% { transform: scale(1); }
-    }
-
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 3em;
+  font-family: 'Orbitron', sans-serif;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.8);
+  padding: 20px 40px;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0 0 20px #ff00ff, 0 0 40px #00ffff;
+  animation: glow 2s infinite alternate;
+  z-index: 5;
+}
+@keyframes glow {
+  0% { box-shadow: 0 0 20px #ff00ff, 0 0 40px #00ffff; }
+  50% { box-shadow: 0 0 30px #ff00ff, 0 0 60px #00ffff; }
+  100% { box-shadow: 0 0 20px #ff00ff, 0 0 40px #00ffff; }
+}
     /* Hidden video container */
     #inviteContainer {
       display: none;
@@ -58,7 +58,6 @@
       position: relative;
       z-index: 1;
     }
-
     video {
       width: 100%;
       height: auto;
@@ -67,7 +66,6 @@
       border-radius: 20px;
       box-shadow: 0 0 20px #ff69b4;
     }
-
     /* Wedding time text */
     #weddingTime {
       position: absolute;
@@ -79,13 +77,11 @@
       animation: popIn 1.5s forwards;
       display: none;
     }
-
     @keyframes popIn {
       0% { transform: scale(0); opacity: 0; }
       50% { transform: scale(1.5); opacity: 1; }
       100% { transform: scale(1); opacity: 1; }
     }
-
     /* Flower petal style - using public PNG */
     .petal {
       position: absolute;
@@ -97,7 +93,6 @@
       animation: fall linear forwards;
       z-index: 3;
     }
-
     @keyframes fall {
       0% { transform: translateY(-50px) rotate(0deg); opacity: 1; }
       100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
@@ -105,16 +100,12 @@
   </style>
 </head>
 <body>
-
   <!-- Overlay -->
   <div class="overlay" id="overlay"></div>
-
   <!-- Countdown -->
   <div id="countdown"></div>
-
   <!-- Wedding Time blast -->
   <div id="weddingTime">🎉💐 Wedding Time! 💐🎉</div>
-
   <!-- Hidden Video Invite -->
   <div id="inviteContainer">
     <video id="weddingVideo" controls autoplay loop>
@@ -124,7 +115,6 @@
       <source src="BG_music.mp3" type="audio/mp3">
     </audio>
   </div>
-
   <script>
     const countdownElement = document.getElementById('countdown');
     const weddingTimeText = document.getElementById('weddingTime');
@@ -132,34 +122,26 @@
     const video = document.getElementById('weddingVideo');
     const audio = document.getElementById('bgMusic');
     const overlay = document.getElementById('overlay');
-
     const targetDate = new Date("2025-08-13T17:00:00+05:30").getTime(); // Set your date here
-
     function updateCountdown() {
       const now = new Date().getTime();
       const distance = targetDate - now;
-
       if (distance <= 0) {
         startWedding();
         return;
       }
-
       const days = Math.floor(distance / (1000 * 60 * 60 * 24));
       const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
       const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
       const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
       countdownElement.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
     }
-
     function startWedding() {
       countdownElement.style.display = "none";
       weddingTimeText.style.display = "block";
       throwFlowers();
-
       // Fade out overlay
       overlay.style.opacity = "0";
-
       setTimeout(() => {
         weddingTimeText.style.display = "none";
         inviteContainer.style.display = "flex";
@@ -168,7 +150,6 @@
         audio.play();
       }, 2000);
     }
-
     function throwFlowers() {
       for (let i = 0; i < 50; i++) {
         const petal = document.createElement('div');
@@ -176,17 +157,16 @@
         petal.style.left = Math.random() * 100 + "vw";
         petal.style.animationDuration = (2 + Math.random() * 3) + "s";
         document.body.appendChild(petal);
-
         setTimeout(() => {
           petal.remove();
         }, 5000);
       }
     }
-
     setInterval(updateCountdown, 1000);
     updateCountdown();
   </script>
 </body>
 </html>
+
 
 
