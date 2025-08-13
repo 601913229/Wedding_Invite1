@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Wedding Invitation</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: url('images/my_bg_image.jpg') no-repeat center center/cover; /* Change to your BG */
+      background-attachment: fixed;
+      position: relative;
+      overflow: hidden;
+      transition: background 1s ease-in-out;
+    }
+
+    /* Dark overlay for dim effect */
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6); /* Adjust darkness */
+      z-index: 0;
+      transition: opacity 1s ease-in-out;
+    }
+
+    /* Countdown in middle */
+    #countdown {
+      position: relative;
+      z-index: 1;
+      font-size: 40px;
+      font-weight: bold;
+      color: #fff;
+      text-shadow: 2px 2px 8px #000;
+      animation: pulse 1s infinite;
+      text-align: center;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 15px;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+
+    /* Hidden video container */
+    #inviteContainer {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    video {
+      width: 100%;
+      height: auto;
+      max-width: 800px;
+      border: 10px solid #fff;
+      border-radius: 20px;
+      box-shadow: 0 0 20px #ff69b4;
+    }
+
+    /* Wedding time text */
+    #weddingTime {
+      position: absolute;
+      z-index: 2;
+      font-size: 50px;
+      font-weight: bold;
+      color: gold;
+      text-shadow: 2px 2px 15px #ff4500;
+      animation: popIn 1.5s forwards;
+      display: none;
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0); opacity: 0; }
+      50% { transform: scale(1.5); opacity: 1; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    /* Flower petal style - using public PNG */
+    .petal {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      background-image: url('https://i.ibb.co/2M3G2wB/petal.png');
+      background-size: cover;
+      pointer-events: none;
+      animation: fall linear forwards;
+      z-index: 3;
+    }
+
+    @keyframes fall {
+      0% { transform: translateY(-50px) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Overlay -->
+  <div class="overlay" id="overlay"></div>
+
+  <!-- Countdown -->
+  <div id="countdown"></div>
+
+  <!-- Wedding Time blast -->
+  <div id="weddingTime">🎉💐 Wedding Time! 💐🎉</div>
+
+  <!-- Hidden Video Invite -->
+  <div id="inviteContainer">
+    <video id="weddingVideo" controls autoplay loop>
+      <source src="My_Wedding_Invite.mp4" type="video/mp4">
+    </video>
+    <audio id="bgMusic" autoplay loop>
+      <source src="BG_music.mp3" type="audio/mp3">
+    </audio>
+  </div>
+
+  <script>
+    const countdownElement = document.getElementById('countdown');
+    const weddingTimeText = document.getElementById('weddingTime');
+    const inviteContainer = document.getElementById('inviteContainer');
+    const video = document.getElementById('weddingVideo');
+    const audio = document.getElementById('bgMusic');
+    const overlay = document.getElementById('overlay');
+
+    const targetDate = new Date("2025-12-25T00:00:00").getTime(); // Set your date here
+
+    function updateCountdown() {
+      const now = new Date().getTime();
+      const distance = targetDate - now;
+
+      if (distance <= 0) {
+        startWedding();
+        return;
+      }
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      countdownElement.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+    }
+
+    function startWedding() {
+      countdownElement.style.display = "none";
+      weddingTimeText.style.display = "block";
+      throwFlowers();
+
+      // Fade out overlay
+      overlay.style.opacity = "0";
+
+      setTimeout(() => {
+        weddingTimeText.style.display = "none";
+        inviteContainer.style.display = "flex";
+        document.body.style.background = "#000"; // Clear BG
+        video.play();
+        audio.play();
+      }, 2000);
+    }
+
+    function throwFlowers() {
+      for (let i = 0; i < 50; i++) {
+        const petal = document.createElement('div');
+        petal.classList.add('petal');
+        petal.style.left = Math.random() * 100 + "vw";
+        petal.style.animationDuration = (2 + Math.random() * 3) + "s";
+        document.body.appendChild(petal);
+
+        setTimeout(() => {
+          petal.remove();
+        }, 5000);
+      }
+    }
+
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+  </script>
+</body>
+</html>
