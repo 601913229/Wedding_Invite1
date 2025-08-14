@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,167 +6,429 @@
   <title>Wedding Invitation</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
   <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      background: url('BG_Image.jpg') no-repeat center center/cover; /* Change to your BG */
+    :root{
+      --neon1:#ff00ff;
+      --neon2:#00ffff;
+    }
+    /* Page & Background */
+    body{
+      margin:0;
+      min-height:100vh;
+      background: url('BG_Image.jpg') no-repeat center center/cover; /* <- your BG image */
       background-attachment: fixed;
-      position: relative;
-      overflow: hidden;
+      position:relative;
+      overflow:hidden;
       transition: background 1s ease-in-out;
+      display:flex;align-items:center;justify-content:center;
     }
-    /* Dark overlay for dim effect */
-    .overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.6); /* Adjust darkness */
-      z-index: 0;
-      transition: opacity 1s ease-in-out;
+    .overlay{
+      position:absolute;inset:0;
+      background:rgba(0,0,0,.6);
+      z-index:0;transition:opacity 1s ease-in-out;
     }
-    /* Countdown in middle */
-    #countdown {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 3em;
-  font-family: 'Orbitron', sans-serif;
-  color: #fff;
-  background: rgba(0, 0, 0, 0.8);
-  padding: 20px 40px;
-  border-radius: 15px;
-  text-align: center;
-  box-shadow: 0 0 20px #ff00ff, 0 0 40px #00ffff;
-  animation: glow 2s infinite alternate;
-  z-index: 5;
-}
-@keyframes glow {
-  0% { box-shadow: 0 0 20px #ff00ff, 0 0 40px #00ffff; }
-  50% { box-shadow: 0 0 30px #ff00ff, 0 0 60px #00ffff; }
-  100% { box-shadow: 0 0 20px #ff00ff, 0 0 40px #00ffff; }
-}
-    /* Hidden video container */
-    #inviteContainer {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      z-index: 1;
+
+    /* Centered countdown (responsive) */
+    #countdown{
+      position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+      font-family:'Orbitron',sans-serif;
+      font-size: clamp(1.25rem, 4vw, 3rem);
+      color:#fff;
+      background:rgba(0,0,0,.8);
+      padding: clamp(10px,2vw,20px) clamp(20px,4vw,40px);
+      border-radius:15px;text-align:center;
+      box-shadow:0 0 20px var(--neon1), 0 0 40px var(--neon2);
+      animation:glow 2s infinite alternate;
+      z-index:5;
     }
-    video {
-      width: 100%;
-      height: auto;
-      max-width: 800px;
-      border: 10px solid #fff;
-      border-radius: 20px;
-      box-shadow: 0 0 20px #ff69b4;
+    @keyframes glow{
+      0%{ box-shadow:0 0 20px var(--neon1), 0 0 40px var(--neon2);}
+      50%{ box-shadow:0 0 30px var(--neon1), 0 0 60px var(--neon2);}
+      100%{ box-shadow:0 0 20px var(--neon1), 0 0 40px var(--neon2);}
     }
-    /* Wedding time text */
-    #weddingTime {
-      position: absolute;
-      z-index: 2;
-      font-size: 50px;
-      font-weight: bold;
-      color: gold;
-      text-shadow: 2px 2px 15px #ff4500;
-      animation: popIn 1.5s forwards;
-      display: none;
+
+    /* Pre-blast text container (Step 3) */
+    #preText{
+      position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+      font-family:'Orbitron',sans-serif;
+      color:#fff;font-weight:700;
+      font-size: clamp(1.5rem, 5vw, 3.5rem);
+      text-shadow: 0 0 10px var(--neon1), 0 0 20px var(--neon1), 0 0 10px #000;
+      z-index:6;display:none;white-space:nowrap;
+      pointer-events:none;
     }
-    @keyframes popIn {
-      0% { transform: scale(0); opacity: 0; }
-      50% { transform: scale(1.5); opacity: 1; }
-      100% { transform: scale(1); opacity: 1; }
+    .from-rt{ animation: enterFromRT 0.9s cubic-bezier(.16,.84,.44,1) forwards; }
+    .from-lt{ animation: enterFromLT 0.9s cubic-bezier(.16,.84,.44,1) forwards; }
+    .from-rb{ animation: enterFromRB 0.9s cubic-bezier(.16,.84,.44,1) forwards; }
+    .from-lb{ animation: enterFromLB 0.9s cubic-bezier(.16,.84,.44,1) forwards; }
+
+    @keyframes enterFromRT{0%{transform:translate(40vw,-40vh) scale(.7);}100%{transform:translate(-50%,-50%) scale(1);}}
+    @keyframes enterFromLT{0%{transform:translate(-140%,-40vh) scale(.7);}100%{transform:translate(-50%,-50%) scale(1);}}
+    @keyframes enterFromRB{0%{transform:translate(40vw,40vh) scale(.7);}100%{transform:translate(-50%,-50%) scale(1);}}
+    @keyframes enterFromLB{0%{transform:translate(-140%,40vh) scale(.7);}100%{transform:translate(-50%,-50%) scale(1);}}
+
+    /* Emoji particles for Step 3 directions */
+    .emojiBurst{
+      position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+      z-index:6;pointer-events:none;
     }
-    /* Flower petal style - using public PNG */
-    .petal {
-      position: absolute;
-      width: 30px;
-      height: 30px;
-      background-image: url('https://i.ibb.co/2M3G2wB/petal.png');
-      background-size: cover;
-      pointer-events: none;
-      animation: fall linear forwards;
-      z-index: 3;
+    .emoji{
+      position:absolute;will-change:transform,opacity;
+      font-size: clamp(20px, 4vw, 34px);
+      filter: drop-shadow(0 2px 2px rgba(0,0,0,.5));
+      opacity:0.95;
     }
-    @keyframes fall {
-      0% { transform: translateY(-50px) rotate(0deg); opacity: 1; }
-      100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+    @keyframes floatUp   {0%{transform:translate(var(--sx,0),0) rotate(0);opacity:1}100%{transform:translate(var(--sx,0),-140px) rotate(var(--rot,25deg));opacity:0}}
+    @keyframes floatDown {0%{transform:translate(var(--sx,0),0) rotate(0);opacity:1}100%{transform:translate(var(--sx,0), 140px) rotate(var(--rot,-25deg));opacity:0}}
+    @keyframes floatRight{0%{transform:translate(0,var(--sy,0)) rotate(0);opacity:1}100%{transform:translate(160px,var(--sy,0)) rotate(var(--rot,25deg));opacity:0}}
+    @keyframes floatLeft {0%{transform:translate(0,var(--sy,0)) rotate(0);opacity:1}100%{transform:translate(-160px,var(--sy,0)) rotate(var(--rot,-25deg));opacity:0}}
+
+    /* Video container */
+    #inviteContainer{
+      display:none;flex-direction:column;align-items:center;justify-content:center;
+      position:relative;z-index:1;width:100%;
+    }
+    video{
+      width:90%;height:auto;max-width:800px;
+      border:10px solid #fff;border-radius:20px;
+      box-shadow:0 0 20px #ff69b4;
+    }
+
+    /* Top Title with roses */
+    #weddingTitle{
+      position:absolute;top:14px;left:50%;transform:translateX(-50%);
+      display:none;align-items:center;gap:12px;
+      font-family:'Orbitron',sans-serif;
+      font-size: clamp(1.25rem, 3.5vw, 2.5rem);
+      color:#fff;text-shadow:0 0 10px var(--neon1),0 0 20px var(--neon1);
+      z-index:7;opacity:0;animation: breathe 3s infinite ease-in-out;
+      pointer-events:none;
+    }
+    .roseIcon{ width: clamp(26px, 5vw, 50px); height:auto; opacity:.9; filter: drop-shadow(0 2px 2px rgba(0,0,0,.5)); }
+    @keyframes breathe{0%{transform:translateX(-50%) scale(1)}50%{transform:translateX(-50%) scale(1.05)}100%{transform:translateX(-50%) scale(1)}}
+    @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+    /* Roses fall at T=0 (over video, semi-transparent) */
+    .rose{
+      position:fixed;top:-60px; will-change: transform,opacity;
+      width: clamp(24px, 4.5vw, 42px); height:auto; opacity:.75;
+      z-index:6; pointer-events:none;
+      animation: fall linear forwards, sway 3s ease-in-out infinite;
+    }
+    @keyframes fall{ from{ transform: translateY(-60px) rotate(0deg);} to{ transform: translateY(110vh) rotate(360deg);} }
+    @keyframes sway{ 0%,100%{ margin-left:0 } 50%{ margin-left:12px } }
+
+    /* Countdown blast (T=0) */
+    .blast{
+      animation: blastScale .35s ease-out forwards, flashGlow .25s ease-out;
+    }
+    @keyframes blastScale{0%{transform:translate(-50%,-50%) scale(1);opacity:1}100%{transform:translate(-50%,-50%) scale(1.5);opacity:0}}
+    @keyframes flashGlow{0%{box-shadow:0 0 40px #fff, 0 0 80px #fff}100%{box-shadow:0 0 0 #0000}}
+
+    /* Blast fragments */
+    .frag{
+      position:absolute; width:6px;height:6px;border-radius:50%;
+      background: radial-gradient(circle at 30% 30%, var(--neon1), var(--neon2));
+      opacity:.95; pointer-events:none; z-index:6;
+      will-change: transform,opacity;
+    }
+
+    /* Accessibility helper for reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      *{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:0.01ms!important;scroll-behavior:auto!important}
     }
   </style>
 </head>
 <body>
-  <!-- Overlay -->
   <div class="overlay" id="overlay"></div>
+
+  <!-- Top persistent title (appears after blast) -->
+  <div id="weddingTitle">
+    <img class="roseIcon" src="https://i.ibb.co/3v2KcN6/rose.png" alt="rose">
+    <span>Wedding Invitation</span>
+    <img class="roseIcon" src="https://i.ibb.co/3v2KcN6/rose.png" alt="rose">
+  </div>
+
   <!-- Countdown -->
   <div id="countdown"></div>
-  <!-- Wedding Time blast -->
-  <div id="weddingTime">🎉💐 Wedding Time! 💐🎉</div>
-  <!-- Hidden Video Invite -->
+
+  <!-- Pre-blast text (Step 3) -->
+  <div id="preText"></div>
+
+  <!-- Invite Video + BG music (post reveal) -->
   <div id="inviteContainer">
-    <video id="weddingVideo" controls autoplay loop>
+    <video id="weddingVideo" controls autoplay loop playsinline>
       <source src="My_Wedding_Invite.mp4" type="video/mp4">
     </video>
     <audio id="bgMusic" autoplay loop>
       <source src="BG_music.mp3" type="audio/mp3">
     </audio>
   </div>
+
+  <!-- Blast sound -->
+  <audio id="blastSound">
+    <source src="https://www.myinstants.com/media/sounds/explosion.mp3" type="audio/mp3">
+  </audio>
+
   <script>
-    const countdownElement = document.getElementById('countdown');
-    const weddingTimeText = document.getElementById('weddingTime');
+    /* ---------- CONFIG ---------- */
+    // !!! Set your real target date/time EXACT 8:00 AM IST
+    const targetDate = new Date("2025-08-14T17:17:00+05:30").getTime();
+
+    // Pre‑wedding playlist (plays on visit; stops at T-5)
+    const playlist = [
+      // Replace with your files or URLs
+      "song1.mp3",
+      "song2.mp3",
+      "song3.mp3"
+    ];
+
+    // Rose image URLs (randomly chosen)
+    const ROSES = [
+      "https://i.ibb.co/3v2KcN6/rose.png",
+      "https://i.ibb.co/7L5Kj1Y/rose-pink.png" // fallback alt; replace if you like
+    ];
+
+    /* ---------- ELEMENTS ---------- */
+    const countdownEl = document.getElementById('countdown');
+    const preTextEl   = document.getElementById('preText');
+    const overlay     = document.getElementById('overlay');
+    const weddingTitle= document.getElementById('weddingTitle');
+
     const inviteContainer = document.getElementById('inviteContainer');
     const video = document.getElementById('weddingVideo');
     const audio = document.getElementById('bgMusic');
-    const overlay = document.getElementById('overlay');
-    const targetDate = new Date("2025-08-13T17:07:00+05:30").getTime(); // Set your date here
-    function updateCountdown() {
-      const now = new Date().getTime();
+    const blastSound = document.getElementById('blastSound');
+
+    /* ---------- STATE ---------- */
+    let preSeqStarted = false;
+    let preMusicStopped = false;
+    let preMusicStarted = false;
+
+    /* ---------- PRE‑WEDDING PLAYLIST ---------- */
+    const preWeddingAudio = new Audio();
+    preWeddingAudio.preload = "auto";
+    let trackIndex = 0;
+
+    function startPreMusicIfAllowed(distance){
+      if (preMusicStarted || preMusicStopped) return;
+      // Do not start if within 5 minutes to target
+      if (distance <= 5*60*1000) return;
+
+      // Attempt autoplay; if blocked, wait for user gesture to start
+      preWeddingAudio.src = playlist[trackIndex % playlist.length];
+      preWeddingAudio.volume = 0.9;
+      preWeddingAudio.loop = false;
+      preWeddingAudio.play().then(()=>{ preMusicStarted = true; }).catch(()=>{
+        const resume = () => {
+          if (!preMusicStarted && !preMusicStopped && (Date.now() < targetDate - 5*60*1000)){
+            preWeddingAudio.play().then(()=>{ preMusicStarted = true; });
+          }
+          window.removeEventListener('pointerdown', resume, {passive:true});
+          window.removeEventListener('keydown', resume);
+        };
+        window.addEventListener('pointerdown', resume, {passive:true, once:true});
+        window.addEventListener('keydown', resume, {once:true});
+      });
+
+      preWeddingAudio.onended = () => {
+        if (preMusicStopped) return;
+        trackIndex++;
+        preWeddingAudio.src = playlist[trackIndex % playlist.length];
+        preWeddingAudio.play().catch(()=>{ /* ignore */ });
+      };
+    }
+
+    function fadeOutAndStopPreMusic(){
+      if (preMusicStopped) return;
+      preMusicStopped = true;
+      const step = 0.1;
+      const fade = setInterval(()=>{
+        preWeddingAudio.volume = Math.max(0, preWeddingAudio.volume - step);
+        if (preWeddingAudio.volume <= 0){
+          clearInterval(fade);
+          preWeddingAudio.pause();
+          preWeddingAudio.currentTime = 0;
+        }
+      }, 80);
+    }
+
+    /* ---------- COUNTDOWN ---------- */
+    function updateCountdown(){
+      const now = Date.now();
       const distance = targetDate - now;
-      if (distance <= 0) {
-        startWedding();
+
+      // Start pre‑wedding music on visit (unless within T-5)
+      startPreMusicIfAllowed(distance);
+
+      // Stop pre‑wedding music at exactly T-5
+      if (distance <= 5*60*1000 && !preMusicStopped){
+        fadeOutAndStopPreMusic();
+      }
+
+      // Kick off Step 3 sequence at T-8s
+      if (distance <= 8000 && distance > 0 && !preSeqStarted){
+        preSeqStarted = true;
+        // Hide countdown during the pre text sequence
+        countdownEl.style.display = 'none';
+        startPreBlastSequence(distance);
+      }
+
+      if (distance <= 0){
+        // Hard stop pre‑wedding music (safety)
+        fadeOutAndStopPreMusic();
+        atTargetBlast();
         return;
       }
-      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-      countdownElement.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+
+      // Normal countdown display
+      const d = Math.floor(distance / (1000*60*60*24));
+      const h = Math.floor((distance % (1000*60*60*24)) / (1000*60*60));
+      const m = Math.floor((distance % (1000*60*60)) / (1000*60));
+      const s = Math.floor((distance % (1000*60)) / 1000);
+      countdownEl.innerHTML = `${d}d ${h}h ${m}m ${s}s`;
     }
-    function startWedding() {
-      countdownElement.style.display = "none";
-      weddingTimeText.style.display = "block";
-      throwFlowers();
-      // Fade out overlay
+
+    /* ---------- STEP 3: Pre‑blast Texts w/ Emoji Bursts ---------- */
+    const preSteps = [
+      { text:"It's time", emojis:"😄", dir:"up",   entry:"from-rt" },
+      { text:"to",        emojis:"😍", dir:"down", entry:"from-lt" },
+      { text:"reveal",    emojis:"🤩", dir:"right",entry:"from-rb" },
+      { text:"the Surprise", emojis:"😲", dir:"left", entry:"from-lb" }
+    ];
+
+    function startPreBlastSequence(){
+      preTextEl.style.display = 'block';
+      let i = 0;
+
+      const runStep = ()=>{
+        if (i >= preSteps.length){ preTextEl.style.display='none'; return; }
+
+        const step = preSteps[i++];
+        preTextEl.className = ''; // reset entry class
+        preTextEl.textContent = step.text;
+        preTextEl.classList.add(step.entry);
+
+        // After entry completes (~900ms), fade text and spawn emojis immediately
+        setTimeout(()=>{
+          preTextEl.style.opacity = "0.05"; // slight fade while emojis take over
+          spawnEmojis(step.emojis, step.dir, 20);
+        }, 900);
+
+        // Move to next step after ~2s total
+        setTimeout(()=>{
+          preTextEl.style.opacity = "1";
+          preTextEl.className = ''; // clear classes for next
+          runStep();
+        }, 2000);
+      };
+
+      runStep();
+    }
+
+    function spawnEmojis(char, direction, count){
+      const wrap = document.createElement('div');
+      wrap.className = 'emojiBurst';
+      document.body.appendChild(wrap);
+
+      for (let k=0;k<count;k++){
+        const e = document.createElement('span');
+        e.className = 'emoji';
+        e.textContent = char;
+        // Random offsets and rotation
+        const sx = (Math.random()*120 - 60) + 'px';
+        const sy = (Math.random()*80 - 40) + 'px';
+        const rot = (Math.random() < .5 ? -1 : 1) * (15 + Math.random()*30) + 'deg';
+        e.style.setProperty('--sx', sx);
+        e.style.setProperty('--sy', sy);
+        e.style.setProperty('--rot', rot);
+        e.style.left = (Math.random()*80 - 40) + 'px';
+        e.style.top  = (Math.random()*40 - 20) + 'px';
+        const dur = (1.8 + Math.random()*0.8).toFixed(2) + 's';
+        if (direction === 'up')   e.style.animation = `floatUp ${dur} ease-out forwards`;
+        if (direction === 'down') e.style.animation = `floatDown ${dur} ease-out forwards`;
+        if (direction === 'right')e.style.animation = `floatRight ${dur} ease-out forwards`;
+        if (direction === 'left') e.style.animation = `floatLeft ${dur} ease-out forwards`;
+        wrap.appendChild(e);
+      }
+      // Cleanup
+      setTimeout(()=>wrap.remove(), 2600);
+    }
+
+    /* ---------- T=0: Blast + Roses + Reveal (no "Wedding Time" text) ---------- */
+    function atTargetBlast(){
+      // Play blast sound instantly
+      try{ blastSound.currentTime = 0; blastSound.play(); }catch(e){}
+
+      // Visual blast on countdown (if still visible)
+      countdownEl.classList.add('blast');
+
+      // Spawn blast fragments
+      spawnBlastFragments();
+
+      // Fade overlay
       overlay.style.opacity = "0";
-      setTimeout(() => {
-        weddingTimeText.style.display = "none";
-        inviteContainer.style.display = "flex";
-        document.body.style.background = "#000"; // Clear BG
-        video.play();
-        audio.play();
-      }, 2000);
+
+      // Start roses fall immediately; keep for ~5s into video
+      startRoses(90); // number of roses
+
+      // Show Title (fade in) and start video + bg audio
+      setTimeout(()=>{
+        weddingTitle.style.display = 'flex';
+        weddingTitle.style.animation = 'breathe 3s infinite ease-in-out, fadeIn 1.2s forwards';
+
+        inviteContainer.style.display = 'flex';
+        document.body.style.background = "#000"; // clear BG behind video
+
+        try{ video.play(); }catch(e){}
+        try{ audio.play(); }catch(e){}
+      }, 200); // very short delay so blast is perceptible
+
+      // Finally hide countdown element after blast
+      setTimeout(()=>{ countdownEl.style.display='none'; }, 450);
     }
-    function throwFlowers() {
-      for (let i = 0; i < 50; i++) {
-        const petal = document.createElement('div');
-        petal.classList.add('petal');
-        petal.style.left = Math.random() * 100 + "vw";
-        petal.style.animationDuration = (2 + Math.random() * 3) + "s";
-        document.body.appendChild(petal);
-        setTimeout(() => {
-          petal.remove();
-        }, 5000);
+
+    function spawnBlastFragments(){
+      const N = 30;
+      for (let i=0;i<N;i++){
+        const f = document.createElement('div');
+        f.className = 'frag';
+        // place around countdown center
+        const x = window.innerWidth/2 + (Math.random()*40 - 20);
+        const y = window.innerHeight/2 + (Math.random()*20 - 10);
+        f.style.left = x + 'px';
+        f.style.top  = y + 'px';
+        const dx = (Math.random()*2-1) * (80 + Math.random()*120);
+        const dy = (Math.random()*2-1) * (80 + Math.random()*120);
+        const dur = 600 + Math.random()*500;
+        f.animate(
+          [
+            { transform:'translate(0,0) scale(1)', opacity:1 },
+            { transform:`translate(${dx}px, ${dy}px) scale(.3)`, opacity:0 }
+          ],
+          { duration: dur, easing:'cubic-bezier(.2,.8,.4,1)', fill:'forwards' }
+        );
+        document.body.appendChild(f);
+        setTimeout(()=>f.remove(), dur+60);
       }
     }
-    setInterval(updateCountdown, 1000);
+
+    function startRoses(count){
+      for (let i=0;i<count;i++){
+        const img = document.createElement('img');
+        img.src = ROSES[Math.floor(Math.random()*ROSES.length)];
+        img.className = 'rose';
+        img.style.left = Math.random()*100 + 'vw';
+        img.style.animationDuration = (5 + Math.random()*4) + 's';
+        img.style.animationDelay = (Math.random()*1.5) + 's';
+        img.style.opacity = 0.65 + Math.random()*0.2;
+        document.body.appendChild(img);
+        setTimeout(()=>img.remove(), 8000);
+      }
+    }
+
+    /* ---------- Ticker ---------- */
     updateCountdown();
+    const ticker = setInterval(updateCountdown, 250); // tighter tick for precise triggers
   </script>
 </body>
 </html>
-
-
-
-
